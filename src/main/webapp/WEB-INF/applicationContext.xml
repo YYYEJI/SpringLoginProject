@@ -10,6 +10,14 @@
     </bean>
     <bean id="jt" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="ds"></property> </bean>
-    <bean id="dao" class="com.example.board.BoardDAO"> <property name="template" ref="jt"></property>
+    <bean id="dao" class="com.example.board.BoardDAO"> <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="ds"></property>
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <property name="mapperLocations" value="classpath:mappers/*-mapper.xml"></property>
+    </bean>
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache"> <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
 </beans>

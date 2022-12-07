@@ -10,11 +10,11 @@ import java.util.Date;
 @Controller
 public class BoardController {
     @Autowired
-    BoardDAO boardDAO;
+    BoardService boardService;
 
     @RequestMapping(value = "/board/list", method= RequestMethod.GET)
     public String boardlist(Model model) {
-        model.addAttribute("list", boardDAO.getBoardList());
+        model.addAttribute("list", boardService.getBoardList());
         return "list";
     }
 
@@ -27,7 +27,7 @@ public class BoardController {
     public String addPostOK(BoardVO vo) {
         vo.setRegdate(new Date());
         System.out.println(vo);
-        int i = boardDAO.insertBoard(vo);
+        int i = boardService.insertBoard(vo);
         if(i==0)
             System.out.println("데이터 추가 실패");
         else
@@ -41,7 +41,7 @@ public class BoardController {
         boardVO.setRegdate(new Date());
 
         System.out.println(boardVO.toString());
-        int i = boardDAO.updateBoard(boardVO);
+        int i = boardService.updateBoard(boardVO);
         if(i==0)
             System.out.println("데이터 수정 실패");
         else
@@ -49,10 +49,9 @@ public class BoardController {
         return "redirect:list";
     }
 
-//    문제
     @RequestMapping(value="/board/deleteok/{id}", method=RequestMethod.GET)
     public String deletePost(@PathVariable("id") int id) {
-        int i = boardDAO.deleteBoard(id);
+        int i = boardService.deleteBoard(id);
         if(i == 0)
             System.out.println("데이터 삭제 실패");
         else
@@ -65,7 +64,7 @@ public class BoardController {
     @RequestMapping(value = "/board/editform", method= RequestMethod.GET)
     public String editPost(@RequestParam(value = "id") Integer id, Model model) {
         System.out.println("edit post start!");
-        BoardVO boardVO = boardDAO.getBoard(id);
+        BoardVO boardVO = boardService.getBoard(id);
         System.out.println(boardVO.toString());
         model.addAttribute("boardVO", boardVO);
         model.addAttribute("id", id);

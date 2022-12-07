@@ -73,4 +73,6 @@ public class BoardVO {
                 ", regdate=" + regdate +
                 '}';
     }
+
+
 }
